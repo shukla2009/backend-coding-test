@@ -4,7 +4,7 @@ const port = 8010;
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
 const buildSchemas = require('./src/schemas');
-const logger = require('./logger')
+const logger = require('./logger')(module)
 
 db.serialize(() => {
     buildSchemas(db);

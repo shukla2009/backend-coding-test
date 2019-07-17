@@ -1,15 +1,27 @@
 'use strict';
-const winston = require('winston')
-module.exports = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    defaultMeta: { service: 'user-service' },
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, label, simple } = format;
+module.exports = function (callingModule) {
+
+  var getLabel = function () {
+    var parts = callingModule.filename.split('/');
+    return parts[parts.length - 2] + '/' + parts.pop();
+  };
+
+  return createLogger({
+    format: combine(
+      label({ label: getLabel() }),
+      timestamp(),
+      simple()
+    ),
     transports: [
-      //
-      // - Write to all logs with level `info` and below to `server.log` 
-      // - Write all logs error (and below) to `error.log`.
-      //
-      new winston.transports.File({ filename: 'log/error.log', level: 'error' }),
-      new winston.transports.File({ filename: 'log/server.log' })
-    ]
+      new transports.Console(),
+      new transports.File({
+        filename: 'log/error.log',
+        level: 'error',
+      }),
+      new transports.File({
+        filename: 'log/server.log',
+      })]
   });
+};
