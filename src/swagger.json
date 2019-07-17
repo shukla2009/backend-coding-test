@@ -1,0 +1,242 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Xendit Test. ",
+        "version": "1.0.0",
+        "title": "Xendit Ride management",
+        "contact": {
+            "email": "shukla2009@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost:8010",
+    "basePath": "",
+    "tags": [
+        {
+            "name": "health",
+            "description": "Health status of server"
+        },
+        {
+            "name": "ride",
+            "description": "Access to Rides"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "tags": [
+                    "health"
+                ],
+                "summary": "Get Health",
+                "description": "Get server health",
+                "operationId": "getHealth",
+                "produces": [
+                    "html/text"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/rides": {
+            "post": {
+                "tags": [
+                    "ride"
+                ],
+                "summary": "Creates a new Ride",
+                "description": "",
+                "operationId": "createRide",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Create a new Ride",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Ride"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Ride"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Ride",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "ride"
+                ],
+                "summary": "Get all rides",
+                "description": "",
+                "operationId": "getAllRide",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type":"array",
+                            "items":{
+                                "$ref": "#/definitions/Ride"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ride not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/rides/{rideId}": {
+            "get": {
+                "tags": [
+                    "ride"
+                ],
+                "summary": "Find ride by rideId",
+                "description": "For valid response try with valid ID",
+                "operationId": "getRideById",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "rideId",
+                        "in": "path",
+                        "description": "ID of ride that needs to be fetched",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Ride"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Ride not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Ride": {
+            "type": "object",
+            "properties": {
+                "rideID":{
+                    "type": "integer",
+                    "format":"int32",
+                    "readOnly": true
+                },
+                "start_lat": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "exclusiveMinimum": true,
+                    "exclusiveMaximum": true,
+                    "description":"-90 < start_lat < 90",
+                    "example":-80.01
+                },
+                "start_long": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "exclusiveMinimum": true,
+                    "exclusiveMaximum": true,
+                    "description":"-180 < start_long < 180",
+                    "example":-81.01
+                },
+                "end_lat": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "exclusiveMinimum": true,
+                    "exclusiveMaximum": true,
+                    "description":"-90 < end_lat < 90",
+                    "example":-82.01
+                },
+                "end_long": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "exclusiveMinimum": true,
+                    "exclusiveMaximum": true,
+                    "description":"-180 < end_long < 180",
+                    "example":-83.01
+                },
+                "rider_name": {
+                    "type": "string",
+                    "example":"John Doe"
+                },
+                "driver_name": {
+                    "type": "string",
+                    "exmaple": "Tim Brooke"
+                },
+                "driver_vehicle": {
+                    "type": "string",
+                    "example":"Honda CRV"
+                },
+                "created":{
+                    "type": "string",
+                    "format":"date-time",
+                    "readOnly":true
+                }
+            },
+            "required":["driver_vehicle","driver_name","rider_name","end_long","end_lat","start_long","start_lat"]
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error_code": {
+                    "type": "string",
+                    "example":"RIDES_NOT_FOUND_ERROR"
+                },
+                "message": {
+                    "type": "string",
+                    "example":"Could not find any rides"
+                }
+            }
+        }
+    }
+}
