@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2019-07-17
+## [1.0.0] - 2019-07-17 [01-Documents]
 ### Added
 - Added api documents using swagger can be fethed at [http://localhost:8010/api-docs]
 - Added Changelog.md to capture all changes
+
+## [1.0.0] - 2019-07-17 [01- Implement Tooling]
+### Added
+- Added eslint can be used with `npm run lint` or `npm run lint:fix`
+- Added testcase and increacse code coverage to 80 
