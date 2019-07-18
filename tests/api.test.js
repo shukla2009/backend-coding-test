@@ -18,7 +18,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -26,7 +26,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -34,7 +34,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -42,7 +42,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -50,7 +50,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -58,7 +58,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -66,7 +66,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -74,7 +74,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -82,7 +82,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -90,7 +90,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -98,7 +98,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
@@ -106,7 +106,7 @@ describe('API tests', () => {
             'rider_name': 'Tom Joon',
             'driver_name': 'Rider Cook',
             'driver_vehicle': 'Honda CRV'
-        },{
+        }, {
             'start_lat': 45.45,
             'start_long': 72.72,
             'end_lat': 85.45,
