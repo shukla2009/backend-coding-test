@@ -90,7 +90,8 @@ module.exports = (sequelize) => {
         {
             sequelize,
             modelName: 'Ride',
-            timestamps: false
+            timestamps: false,
+            logging:false
         }
     )
 };

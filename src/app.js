@@ -43,8 +43,13 @@ module.exports = (db) => {
     });
 
     app.get('/rides', async (req, res) => {
+        let options = {
+            offset: req.query.offset ? req.query.offset : 0,
+            limit: req.query.limit ? req.query.limit : 5,
+            order: [['rideID', 'ASC']]
+        };
         try {
-            let rides = await Ride.findAll()
+            let rides = await Ride.findAll(options)
             if (rides.length === 0) {
                 return res.status(400).send({
                     error_code: 'RIDES_NOT_FOUND_ERROR',

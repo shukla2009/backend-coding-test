@@ -3,15 +3,118 @@
 const request = require('supertest');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
-    dialect: 'sqlite'
+    dialect: 'sqlite',
+    logging: false
 });
 const app = require('../src/app')(sequelize);
-
+const Ride = require('../src/ride.model')(sequelize);
 describe('API tests', () => {
     before((done) => {
-        sequelize.sync().then(
-            done()
-        );
+        sequelize.sync().then(Ride.bulkCreate([{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        },{
+            'start_lat': 45.45,
+            'start_long': 72.72,
+            'end_lat': 85.45,
+            'end_long': 45.85,
+            'rider_name': 'Tom Joon',
+            'driver_name': 'Rider Cook',
+            'driver_vehicle': 'Honda CRV'
+        }]).then(done()));
     });
 
     describe('GET /health', () => {
@@ -26,7 +129,7 @@ describe('API tests', () => {
     describe('GET /rides empty', () => {
         it('Should not get any rides in database', (done) => {
             request(app)
-                .get('/rides')
+                .get('/rides?offset=100')
                 .expect('Content-Type', /json/)
                 .expect(400, {
                     'error_code': 'RIDES_NOT_FOUND_ERROR',
@@ -75,80 +178,6 @@ describe('API tests', () => {
                     message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
                 }, done);
         });
-        it('Should throw error while creating ride with invalid end coordinate', (done) => {
-            request(app)
-                .post('/rides')
-                .send({
-                    'start_lat': 45.45,
-                    'start_long': 72.72,
-                    'end_lat': 185.45,
-                    'end_long': 45.85,
-                    'rider_name': 'Tom Joon',
-                    'driver_name': 'Rider Cook',
-                    'driver_vehicle': 'Honda CRV'
-                })
-                .expect('Content-Type', /json/)
-                .expect(400, {
-                    error_code: 'VALIDATION_ERROR',
-                    message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
-                }, done);
-        });
-        it('Should throw error while creating ride with invalid rider_name', (done) => {
-            request(app)
-                .post('/rides')
-                .send({
-                    'start_lat': 45.45,
-                    'start_long': 72.72,
-                    'end_lat': 85.45,
-                    'end_long': 45.85,
-                    'rider_name': '',
-                    'driver_name': 'Rider Cook',
-                    'driver_vehicle': 'Honda CRV'
-                })
-                .expect('Content-Type', /json/)
-                .expect(400, {
-                    error_code: 'VALIDATION_ERROR',
-                    message: 'Rider name must be a non empty string'
-                }, done);
-        });
-
-        it('Should throw error while creating ride with invalid driver_name', (done) => {
-            request(app)
-                .post('/rides')
-                .send({
-                    'start_lat': 45.45,
-                    'start_long': 72.72,
-                    'end_lat': 85.45,
-                    'end_long': 45.85,
-                    'rider_name': 'Rider Cook',
-                    'driver_name': '',
-                    'driver_vehicle': 'Honda CRV'
-                })
-                .expect('Content-Type', /json/)
-                .expect(400, {
-                    error_code: 'VALIDATION_ERROR',
-                    message: 'Driver name must be a non empty string'
-                }, done);
-        });
-        it('Should throw error while creating ride with invalid driver_vehicle', (done) => {
-            request(app)
-                .post('/rides')
-                .send({
-                    'start_lat': 45.45,
-                    'start_long': 72.72,
-                    'end_lat': 85.45,
-                    'end_long': 45.85,
-                    'rider_name': 'Rider Cook',
-                    'driver_name': 'Rider Cook',
-                    'driver_vehicle': ''
-                })
-                .expect('Content-Type', /json/)
-                .expect(400, {
-                    error_code: 'VALIDATION_ERROR',
-                    message: 'Driver vehicle must be a non empty string'
-                }, done);
-        });
-
     });
 
     describe('GET /rides', () => {
@@ -160,8 +189,22 @@ describe('API tests', () => {
                     if (err) {
                         return done(err);
                     }
-                    if (res.body.length !== 1) throw new Error('Ride not found');
+                    if (res.body.length !== 5) throw new Error(`Expcted Rides to be 5 but found ${res.body.length}`);
                     if (res.body[0]['rideID'] !== 1) throw new Error('Invalid ride Found');
+                    return done();
+                });
+        });
+
+        it('Should get all rides with offset and limit', (done) => {
+            request(app)
+                .get('/rides?offset=5&limit=2')
+                .expect('Content-Type', /json/)
+                .end((err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    if (res.body.length !== 2) throw new Error(`Pagination not using limit properly expected lenth 1 got ${res.body.length}`);
+                    if (res.body[0]['rideID'] !== 6) throw new Error('Pagination not using offsets properly');
                     return done();
                 });
         });
@@ -183,7 +226,7 @@ describe('API tests', () => {
 
         it('Should try to fetch ride not exists', (done) => {
             request(app)
-                .get('/rides/2')
+                .get('/rides/100')
                 .expect('Content-Type', /json/)
                 .expect(400, {
                     'error_code': 'RIDES_NOT_FOUND_ERROR',
