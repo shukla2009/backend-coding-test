@@ -20,3 +20,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Modified
 - Use sequlize instead of direct db
 - Use async/await instead of callback
+- Add pagination
+- Add pagination test case 
