@@ -239,8 +239,8 @@ describe('API tests', () => {
                 .get('/rides/1 OR 1=1')
                 .expect('Content-Type', /json/)
                 .expect(400, {
-                    'error_code': 'RIDES_NOT_FOUND_ERROR',
-                    'message': 'Could not find any rides'
+                    'error_code': 'SERVER_ERROR',
+                    'message': 'Unknown error'
                 }, done);
         });
     });

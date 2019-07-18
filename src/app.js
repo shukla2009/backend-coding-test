@@ -11,9 +11,15 @@ const logger = require('../logger')(module)
 const SERVER_ERROR = { error_code: 'SERVER_ERROR', message: 'Unknown error' }
 
 const logRequest = (req, res, next) => {
-    logger.info(`${req.method} ${req.originalUrl}`)
+    // logger.info(`${req.method} ${req.originalUrl}`)
     res.on('finish', () => {
-        logger.info(`${res.statusCode} ${res.statusMessage}; ${res.get('Content-Length') || 0}b sent`)
+        let msg = `${req.method} ${req.originalUrl} ${res.statusCode} ${res.statusMessage}; ${res.get('Content-Length') || 0}b sent`;
+ 
+        if(res.statusCode >= 200 && res.statusCode < 400){
+            logger.info(msg);
+        }else{
+            logger.error(msg);
+        }
     })
     next()
 }
@@ -44,8 +50,8 @@ module.exports = (db) => {
 
     app.get('/rides', async (req, res) => {
         let options = {
-            offset: req.query.offset ? req.query.offset : 0,
-            limit: req.query.limit ? req.query.limit : 5,
+            offset: Number(req.query.offset) || 0 ,
+            limit: Number(req.query.limit) || 5 ,
             order: [['rideID', 'ASC']]
         };
         try {
@@ -67,7 +73,7 @@ module.exports = (db) => {
 
     app.get('/rides/:id', async (req, res) => {
         try {
-            let ride = await Ride.findByPk(req.params.id)
+            let ride = await Ride.findByPk(Number(req.params.id))
             if (ride)
                 res.send(ride);
             else
