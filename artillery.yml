@@ -1,0 +1,32 @@
+config:
+  target: 'http://localhost:8010'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+    - duration: 20
+      arrivalRate: 5
+      rampTo: 100
+    - duration: 30
+      arrivalRate: 100
+  variables:
+
+scenarios:
+  - flow:
+    - post:
+        url: "/rides"
+        json:
+          start_lat: 89.77
+          start_long: 29.33
+          end_lat: 85.88
+          end_long: 85.00
+          rider_name: "Tom Zoom"
+          driver_name: "David Geek"
+          driver_vehicle: "Honda Crv"
+        capture:
+            json: "$.rideID"
+            as: "id"
+    - think: 2
+    - get:
+        url: "/rides?offset={{ id }}&limit=3"
+    - get:
+        url: "/rides/{{ id }}"

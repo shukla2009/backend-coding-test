@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "npm run lint & nyc mocha tests",
+    "test:load": "./node_modules/forever/bin/forever start index.js; ./node_modules/artillery/bin/artillery run artillery.yml; ./node_modules/forever/bin/forever stop index.js;",
     "lint": "eslint ./src/*.js;eslint ./*.js;",
     "lint:fix": "eslint ./src/*.js --fix;eslint ./*.js --fix;",
     "start": "node index.js",
@@ -24,12 +25,14 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.16.4",
+    "forever": "^1.0.0",
     "sequelize": "^5.10.1",
     "sqlite3": "^4.0.6",
     "swagger-ui-express": "^4.0.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "artillery": "^1.6.0-28",
     "eslint": "^5.16.0",
     "eslint-plugin-import": "^2.18.0",
     "mocha": "^6.1.4",
