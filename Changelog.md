@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2019-07-17 [03- Code Optimization]
 ### Modified
-- Use sequlize instead of direct db
+- Use sequlize instead of direct db [Protection from sql injection] 
 - Use async/await instead of callback
 - Add pagination
 - Add pagination test case 
