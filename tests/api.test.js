@@ -1,22 +1,17 @@
 'use strict';
 
 const request = require('supertest');
-
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(':memory:');
-
-const app = require('../src/app')(db);
-const buildSchemas = require('../src/schemas');
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize({
+    dialect: 'sqlite'
+});
+const app = require('../src/app')(sequelize);
 
 describe('API tests', () => {
     before((done) => {
-        db.serialize((err) => {
-            if (err) {
-                return done(err);
-            }
-            buildSchemas(db);
-            done();
-        });
+        sequelize.sync().then(
+            done()
+        );
     });
 
     describe('GET /health', () => {
@@ -25,6 +20,18 @@ describe('API tests', () => {
                 .get('/health')
                 .expect('Content-Type', /text/)
                 .expect(200, done);
+        });
+    });
+
+    describe('GET /rides empty', () => {
+        it('Should not get any rides in database', (done) => {
+            request(app)
+                .get('/rides')
+                .expect('Content-Type', /json/)
+                .expect(400, {
+                    'error_code': 'RIDES_NOT_FOUND_ERROR',
+                    'message': 'Could not find any rides'
+                }, done);
         });
     });
 
@@ -46,7 +53,7 @@ describe('API tests', () => {
                     if (err) {
                         return done(err);
                     }
-                    if (!('rideID' in res.body[0])) throw new Error('Ride Create Failed');
+                    if (!('rideID' in res.body)) throw new Error('Ride Creation Failed');
                     return done();
                 });
         });
@@ -63,10 +70,10 @@ describe('API tests', () => {
                     'driver_vehicle': 'Honda CRV'
                 })
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
                     error_code: 'VALIDATION_ERROR',
                     message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
-                },done);
+                }, done);
         });
         it('Should throw error while creating ride with invalid end coordinate', (done) => {
             request(app)
@@ -81,10 +88,10 @@ describe('API tests', () => {
                     'driver_vehicle': 'Honda CRV'
                 })
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
                     error_code: 'VALIDATION_ERROR',
                     message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
-                },done);
+                }, done);
         });
         it('Should throw error while creating ride with invalid rider_name', (done) => {
             request(app)
@@ -99,10 +106,10 @@ describe('API tests', () => {
                     'driver_vehicle': 'Honda CRV'
                 })
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
                     error_code: 'VALIDATION_ERROR',
                     message: 'Rider name must be a non empty string'
-                },done);
+                }, done);
         });
 
         it('Should throw error while creating ride with invalid driver_name', (done) => {
@@ -118,10 +125,10 @@ describe('API tests', () => {
                     'driver_vehicle': 'Honda CRV'
                 })
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
                     error_code: 'VALIDATION_ERROR',
                     message: 'Driver name must be a non empty string'
-                },done);
+                }, done);
         });
         it('Should throw error while creating ride with invalid driver_vehicle', (done) => {
             request(app)
@@ -136,10 +143,10 @@ describe('API tests', () => {
                     'driver_vehicle': ''
                 })
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
                     error_code: 'VALIDATION_ERROR',
                     message: 'Driver vehicle must be a non empty string'
-                },done);
+                }, done);
         });
 
     });
@@ -169,7 +176,7 @@ describe('API tests', () => {
                     if (err) {
                         return done(err);
                     }
-                    if (res.body[0]['rideID'] !== 1) throw new Error('No ride corresponding to id 1');
+                    if (res.body['rideID'] !== 1) throw new Error('No ride corresponding to id 1');
                     return done();
                 });
         });
@@ -178,7 +185,17 @@ describe('API tests', () => {
             request(app)
                 .get('/rides/2')
                 .expect('Content-Type', /json/)
-                .expect(200, {
+                .expect(400, {
+                    'error_code': 'RIDES_NOT_FOUND_ERROR',
+                    'message': 'Could not find any rides'
+                }, done);
+        });
+
+        it('Should prevent sql injection', (done) => {
+            request(app)
+                .get('/rides/1 OR 1=1')
+                .expect('Content-Type', /json/)
+                .expect(400, {
                     'error_code': 'RIDES_NOT_FOUND_ERROR',
                     'message': 'Could not find any rides'
                 }, done);
